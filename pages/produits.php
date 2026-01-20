@@ -1,8 +1,4 @@
 <?php
-/**
- * Vue Produits - Affichage de la gestion du stock
- * La logique métier est gérée par PageProduitController
- */
 
 $pageTitle = 'Gestion du Stock';
 $additionalCss = './styles/produits.css';

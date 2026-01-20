@@ -168,7 +168,7 @@ class ProduitController {
                 $this->action = 'list';
             }
         }
-
+    
         // Récupérer tous les produits
         $this->produits = $this->produitModel->getAll();
 

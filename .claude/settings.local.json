@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(del \"c:\\\\xampp\\\\htdocs\\\\gestion\\\\services\\\\BusinessService.php\")",
+      "Bash(del \"c:\\\\xampp\\\\htdocs\\\\gestion\\\\database\\\\check_audit_table.php\")",
+      "Bash(del \"c:\\\\xampp\\\\htdocs\\\\gestion\\\\database\\\\requetes_utiles.sql\")"
+    ]
+  }
+}
