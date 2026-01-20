@@ -95,7 +95,7 @@ php/
    - Lignes de commande
    - Produits + quantités
 
-7. **historique_actions**
+7. **audit**
    - Audit de toutes les actions
    - Login, CRUD, etc.
 
@@ -366,7 +366,7 @@ tar -czf backup_files_$(date +%Y%m%d).tar.gz php/
 
 ### Logs
 - Activer les logs PHP (`error_log`)
-- Consulter `historique_actions` pour l'audit
+- Consulter `audit` pour l'audit
 - Surveiller les performances
 
 ## Améliorations Possibles
