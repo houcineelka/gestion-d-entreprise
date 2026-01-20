@@ -53,6 +53,7 @@ $currentPage = basename($_SERVER['PHP_SELF'], '.php');
                     <div class="nav-section-title">Administration</div>
                     <a href="utilisateurs.php" class="nav-item <?php echo $currentPage === 'utilisateurs' ? 'active' : ''; ?>">Utilisateurs</a>
                     <a href="primes.php" class="nav-item <?php echo $currentPage === 'primes' ? 'active' : ''; ?>">Primes</a>
+                    <a href="historique.php" class="nav-item <?php echo $currentPage === 'historique' ? 'active' : ''; ?>">Historique</a>
                 </div>
                 <?php endif; ?>
             </nav>
