@@ -1,7 +1,5 @@
 <?php
-/**
- * Trait Auditable - Pour l'authentification et l'historique des actions
- */
+
 trait AuditableTrait {
 
   
@@ -20,7 +18,7 @@ trait AuditableTrait {
             // Récupérer l'ID utilisateur de la session
             $utilisateurId = $_SESSION['user_id'] ?? null;
 
-            $sql = "INSERT INTO historique_actions
+            $sql = "INSERT INTO audit
                     (utilisateur_id, type_action, table_cible, id_cible, details, ip_address)
                     VALUES (:utilisateur_id, :type_action, :table_cible, :id_cible, :details, :ip_address)";
 
@@ -35,7 +33,7 @@ trait AuditableTrait {
             ]);
 
             if (!$result) {
-                error_log("Échec de l'insertion dans historique_actions: " . implode(', ', $stmt->errorInfo()));
+                error_log("Échec de l'insertion dans audit: " . implode(', ', $stmt->errorInfo()));
             }
 
             return $result;
@@ -83,7 +81,7 @@ trait AuditableTrait {
         try {
             $db = Database::getInstance()->getConnection();
 
-            $sql = "SELECT * FROM historique_actions
+            $sql = "SELECT * FROM audit
                     WHERE utilisateur_id = :user_id
                     ORDER BY date_action DESC
                     LIMIT :limit";
