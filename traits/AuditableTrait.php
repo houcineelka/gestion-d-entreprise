@@ -4,31 +4,21 @@
  */
 trait AuditableTrait {
 
-    /**
-     * Vérifie si la table historique_actions existe
-     */
-    private function auditTableExists(): bool {
-        try {
-            $db = Database::getInstance()->getConnection();
-            $result = $db->query("SHOW TABLES LIKE 'historique_actions'");
-            return $result->rowCount() > 0;
-        } catch (PDOException $e) {
-            return false;
-        }
-    }
-
+  
     /**
      * Enregistre une action dans l'historique
      */
     protected function logAction($typeAction, $tableCible = null, $idCible = null, $details = null) {
         try {
-            // Vérifier si la table existe
-            if (!$this->auditTableExists()) {
-                error_log("Table historique_actions n'existe pas. Veuillez exécuter le script schema.sql");
-                return false;
+            // S'assurer que la session est démarrée
+            if (session_status() === PHP_SESSION_NONE) {
+                session_start();
             }
 
             $db = Database::getInstance()->getConnection();
+
+            // Récupérer l'ID utilisateur de la session
+            $utilisateurId = $_SESSION['user_id'] ?? null;
 
             $sql = "INSERT INTO historique_actions
                     (utilisateur_id, type_action, table_cible, id_cible, details, ip_address)
@@ -36,7 +26,7 @@ trait AuditableTrait {
 
             $stmt = $db->prepare($sql);
             $result = $stmt->execute([
-                ':utilisateur_id' => $_SESSION['user_id'] ?? null,
+                ':utilisateur_id' => $utilisateurId,
                 ':type_action' => $typeAction,
                 ':table_cible' => $tableCible,
                 ':id_cible' => $idCible,
@@ -59,29 +49,23 @@ trait AuditableTrait {
      * Vérifie si l'utilisateur est connecté
      */
     protected function isAuthenticated() {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
         return isset($_SESSION['user_id']) && !empty($_SESSION['user_id']);
     }
 
     /**
      * Vérifie si l'utilisateur a une catégorie spécifique
      */
-    protected function hasRole($role) {
+    protected function hasRole() {
         if (!$this->isAuthenticated()) {
             return false;
         }
-        return isset($_SESSION['user_role']) && $_SESSION['user_role'] === $role;
+        return isset($_SESSION['user_role']) && $_SESSION['user_role'] === "Manager";
     }
 
-    /**
-     * Vérifie si l'utilisateur a l'une des catégories spécifiées
-     */
-    protected function hasAnyRole($roles) {
-        if (!$this->isAuthenticated()) {
-            return false;
-        }
-        return isset($_SESSION['user_role']) && in_array($_SESSION['user_role'], $roles);
-    }
-
+  
     /**
      * Redirige vers la page de connexion si non authentifié
      */

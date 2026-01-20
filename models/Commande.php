@@ -168,25 +168,5 @@ class Commande {
         }
     }
 
-    /**
-     * Calculer la remise pour un client (2.5% des achats de l'année)
-     */
-    public function calculerRemiseClient($clientId, $annee) {
-        try {
-            $sql = "SELECT SUM(montant_final) as total_achats
-                    FROM commandes
-                    WHERE client_id = :client_id AND YEAR(date_commande) = :annee";
-
-            $stmt = $this->db->prepare($sql);
-            $stmt->execute([':client_id' => $clientId, ':annee' => $annee]);
-
-            $result = $stmt->fetch();
-            $totalAchats = $result['total_achats'] ?? 0;
-
-            return $totalAchats * 0.025; // 2.5%
-        } catch (PDOException $e) {
-            error_log("Erreur calcul remise: " . $e->getMessage());
-            return 0;
-        }
-    }
+  
 }

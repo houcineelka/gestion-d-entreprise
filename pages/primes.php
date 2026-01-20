@@ -10,8 +10,17 @@ $additionalCss = './styles/primes.css';
 // Charger le contrôleur
 require_once __DIR__ . '/../controllers/PrimeController.php';
 
-// Initialiser et traiter la requête
+// Initialiser le contrôleur
 $controller = new PrimeController();
+
+// Vérifier si c'est une demande de téléchargement PDF
+if (isset($_GET['action']) && $_GET['action'] === 'pdf') {
+    $annee = $_GET['annee'] ?? date('Y');
+    $controller->genererRapportPrimes($annee);
+    exit;
+}
+
+// Traiter la requête normale
 $controller->handleRequest();
 
 // Récupérer les données du contrôleur
@@ -46,8 +55,8 @@ if (!$controller->hasAccess()) {
 <div class="header">
     <h1>Gestion des Primes et Remises</h1>
     <div class="header-buttons">
-        <a href="rapport_primes.php?annee=<?php echo $annee; ?>" target="_blank" class="btn btn-primary">
-            Générer Rapport PDF
+        <a href="primes.php?action=pdf&annee=<?php echo $annee; ?>" class="btn btn-primary">
+            Télécharger Rapport PDF
         </a>
     </div>
 </div>
