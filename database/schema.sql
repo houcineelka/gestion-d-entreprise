@@ -38,6 +38,7 @@ CREATE TABLE IF NOT EXISTS clients (
     ville VARCHAR(100),
     code_postal VARCHAR(10),
     commercial_id INT,
+    actif BOOLEAN DEFAULT TRUE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (commercial_id) REFERENCES utilisateurs(id) ON DELETE SET NULL,
@@ -53,6 +54,7 @@ CREATE TABLE IF NOT EXISTS produits (
     stock_actuel INT DEFAULT 0,
     stock_min INT DEFAULT 10,
     categorie VARCHAR(100),
+    actif BOOLEAN DEFAULT TRUE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     INDEX idx_stock (stock_actuel),
@@ -93,7 +95,7 @@ CREATE TABLE IF NOT EXISTS details_commande (
 ) ENGINE=InnoDB;
 
 -- Table historique/audit
-CREATE TABLE IF NOT EXISTS historique_actions (
+CREATE TABLE IF NOT EXISTS audit (
     id INT AUTO_INCREMENT PRIMARY KEY,
     utilisateur_id INT,
     type_action VARCHAR(100) NOT NULL,

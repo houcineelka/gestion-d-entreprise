@@ -62,7 +62,7 @@ class Produit {
      */
     public function read($id) {
         try {
-            $sql = "SELECT * FROM produits WHERE id = :id";
+            $sql = "SELECT * FROM produits WHERE id = :id AND actif = 1";
             $stmt = $this->db->prepare($sql);
             $stmt->execute([':id' => $id]);
             return $stmt->fetch();
@@ -105,16 +105,16 @@ class Produit {
     }
 
     /**
-     * Supprimer un produit
+     * Supprimer un produit (suppression logique)
      */
     public function delete($id) {
         try {
-            $sql = "DELETE FROM produits WHERE id = :id";
+            $sql = "UPDATE produits SET actif = 0 WHERE id = :id";
             $stmt = $this->db->prepare($sql);
             $result = $stmt->execute([':id' => $id]);
 
             if ($result) {
-                $this->logAction('DELETE_PRODUIT', 'produits', $id, "Suppression produit");
+                $this->logAction('DELETE_PRODUIT', 'produits', $id, "Désactivation produit");
             }
 
             return $result;
@@ -129,7 +129,7 @@ class Produit {
      */
     public function getAll() {
         try {
-            $sql = "SELECT * FROM produits ORDER BY nom";
+            $sql = "SELECT * FROM produits WHERE actif = 1 ORDER BY nom";
             $stmt = $this->db->query($sql);
             return $stmt->fetchAll();
         } catch (PDOException $e) {
@@ -143,7 +143,7 @@ class Produit {
      */
     public function getProduitsEnRupture() {
         try {
-            $sql = "SELECT * FROM produits WHERE stock_actuel <= stock_min ORDER BY stock_actuel";
+            $sql = "SELECT * FROM produits WHERE stock_actuel <= stock_min AND actif = 1 ORDER BY stock_actuel";
             $stmt = $this->db->query($sql);
             return $stmt->fetchAll();
         } catch (PDOException $e) {

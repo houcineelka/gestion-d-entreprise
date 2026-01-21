@@ -39,9 +39,7 @@ if (!$controller->hasAccess()) {
 <!-- En-tête -->
 <div class="header">
     <h1>Historique des Actions Utilisateurs</h1>
-    <div class="header-buttons">
-        <a href="utilisateurs.php" class="btn-secondary">← Retour aux Utilisateurs</a>
-    </div>
+  
 </div>
 
 <!-- Statistiques -->
@@ -117,7 +115,7 @@ if (!$controller->hasAccess()) {
 
             <div class="filter-actions">
                 <button type="submit" class="btn-primary">Filtrer</button>
-                <a href="historique_utilisateurs.php" class="btn-secondary">Réinitialiser</a>
+                <a href="historique.php" class="btn-secondary">Réinitialiser</a>
             </div>
         </div>
     </form>

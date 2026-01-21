@@ -72,7 +72,7 @@ class Client {
             $sql = "SELECT c.*, CONCAT(u.prenom, ' ', u.nom) as commercial_nom
                     FROM clients c
                     LEFT JOIN utilisateurs u ON c.commercial_id = u.id
-                    WHERE c.id = :id";
+                    WHERE c.id = :id AND c.actif = 1";
 
             $stmt = $this->db->prepare($sql);
             $stmt->execute([':id' => $id]);
@@ -119,16 +119,16 @@ class Client {
     }
 
     /**
-     * Supprimer un client
+     * Supprimer un client (suppression logique)
      */
     public function delete($id) {
         try {
-            $sql = "DELETE FROM clients WHERE id = :id";
+            $sql = "UPDATE clients SET actif = 0 WHERE id = :id";
             $stmt = $this->db->prepare($sql);
             $result = $stmt->execute([':id' => $id]);
 
             if ($result) {
-                $this->logAction('DELETE_CLIENT', 'clients', $id, "Suppression client");
+                $this->logAction('DELETE_CLIENT', 'clients', $id, "Désactivation client");
             }
 
             return $result;
@@ -146,6 +146,7 @@ class Client {
             $sql = "SELECT c.*, CONCAT(u.prenom, ' ', u.nom) as commercial_nom
                     FROM clients c
                     LEFT JOIN utilisateurs u ON c.commercial_id = u.id
+                    WHERE c.actif = 1
                     ORDER BY c.nom, c.prenom";
 
             $stmt = $this->db->query($sql);
@@ -161,7 +162,7 @@ class Client {
      */
     public function getByCommercial($commercialId) {
         try {
-            $sql = "SELECT * FROM clients WHERE commercial_id = :commercial_id ORDER BY nom, prenom";
+            $sql = "SELECT * FROM clients WHERE commercial_id = :commercial_id AND actif = 1 ORDER BY nom, prenom";
             $stmt = $this->db->prepare($sql);
             $stmt->execute([':commercial_id' => $commercialId]);
             return $stmt->fetchAll();

@@ -124,7 +124,7 @@ INSERT INTO details_commande (commande_id, produit_id, quantite, prix_unitaire, 
 (10, 8, 1, 1899.99, 1899.99);
 
 -- Insertion d'actions dans l'historique
-INSERT INTO historique_actions (utilisateur_id, type_action, table_cible, id_cible, details, ip_address) VALUES
+INSERT INTO audit (utilisateur_id, type_action, table_cible, id_cible, details, ip_address) VALUES
 (1, 'LOGIN', 'utilisateurs', 1, 'Connexion admin', '127.0.0.1'),
 (2, 'CREATE_CLIENT', 'clients', 1, 'Nouveau client: luc.bernard@email.com', '127.0.0.1'),
 (2, 'CREATE_COMMANDE', 'commandes', 1, 'Nouvelle commande: 1299.99€', '127.0.0.1'),
